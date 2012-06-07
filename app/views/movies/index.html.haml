@@ -4,9 +4,13 @@
 %table#movies
   %thead
     %tr
-      %th= link_to "Movie Title", :sort => "title"
-      %th= link_to "Rating", :sort => "rating" 
-      %th= link_to "Release Date", :sort => "release_date" 
+      
+      %th{class: @columnsort == 'title' && 'hilite'}
+        = link_to "Movie Title", {:sort => "title"}, :id => 'title_header'
+      %th{class: @columnsort == 'rating' && 'hilite'}
+        = link_to "Rating", :sort => "rating", :id => 'rating'
+      %th{class: @columnsort == 'release_date' && 'hilite'}
+        = link_to "Release Date", {:sort => "release_date"}, :id => 'release_date_header' 
       %th More Info 
   %tbody
     - @movies.each do |movie|
