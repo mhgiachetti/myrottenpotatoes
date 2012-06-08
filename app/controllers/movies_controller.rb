@@ -13,9 +13,12 @@ class MoviesController < ApplicationController
 
   def index
     @columnsort = params[:sort]
-    @filters = params[:ratings]
-    if @filters
-      condition = @filters.keys.map{|x| "rating = '#{x}'"}.join(" or ")
+    @ratings = params[:ratings]
+    if @ratings
+      condition = @ratings.map{"rating = ?"}.join(" or ")
+      condition = [condition] + @ratings.keys
+    else
+      @ratings = {}
     end    
     @movies = Movie.find(:all,:conditions => condition, :order => @columnsort)
   end
