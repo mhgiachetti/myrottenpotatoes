@@ -12,9 +12,20 @@ class MoviesController < ApplicationController
   end
 
   def index
+    
+    
+    if ((not params.has_key?(:sort)) && session.has_key?(:sort)) || ((not (params.has_key?(:ratings) || params.has_key?(:commit))) && session.has_key?(:ratings))
+      flash.keep
+      redirect_to :action => "index", :sort => session[:sort], :ratings => session[:ratings]
+    end
+      
     @columnsort = params[:sort]
     @ratings = params[:ratings]
-    if @ratings
+    
+    session[:sort] = @columnsort
+    session[:ratings] = @ratings
+    
+    if @ratings 
       condition = @ratings.map{"rating = ?"}.join(" or ")
       condition = [condition] + @ratings.keys
     else
